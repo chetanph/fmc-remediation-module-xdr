@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module name="TriggerXDRWorkflow">
+    <global_config>
+        <display_name>Remediation Action Using XDR Workflow</display_name>
+        <description>This remediation module will send source IP address to XDR Workflow</description>
+        <binary>trigger_workflow.py</binary>
+        <version>1.0</version>
+    </global_config>
+
+    <config_template>
+        <string>
+            <name>webhook_url</name>
+            <display_name>XDR Webhook URL</display_name>
+        </string>
+    </config_template>
+    
+    <remediation_type name="block_source">
+        <display_name>Block Source IP Address</display_name>
+        <policy_event_data>
+            <pe_item required="true">src_ip_addr</pe_item>
+        </policy_event_data>
+    </remediation_type>
+
+    <!-- remediation_type name="block_destination">
+        <display_name>Block Destination IP Address</display_name>
+        <policy_event_data>
+            <pe_item required="true">dest_ip_addr</pe_item>
+        </policy_event_data>
+    </remediation_type -->
+
+    <exit_status value="129">Failed to trigger XDR Webhook</exit_status>
+</module>
