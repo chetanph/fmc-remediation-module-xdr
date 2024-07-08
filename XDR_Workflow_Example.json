@@ -1,0 +1,195 @@
+{
+  "workflow": {
+    "unique_name": "definition_workflow_025359T2P4HPF5IjzzbKRdoRKW6jNfZdjRh",
+    "name": "Process FMC Correlation Event from Remediation Module",
+    "title": "Process FMC Correlation Event from Remediation Module",
+    "type": "generic.workflow",
+    "base_type": "workflow",
+    "variables": [
+      {
+        "schema_id": "datatype.string",
+        "properties": {
+          "value": "{}",
+          "scope": "input",
+          "name": "Webhook Data",
+          "type": "datatype.string",
+          "description": "Data sent by FMC remediation module to the XDR webhook.",
+          "is_required": false,
+          "display_on_wizard": false,
+          "is_invisible": false
+        },
+        "unique_name": "variable_workflow_02535CZI58TL06x4eqq9JK5WSiB3RfWl5WN",
+        "object_type": "variable_workflow"
+      }
+    ],
+    "properties": {
+      "atomic": {
+        "is_atomic": false
+      },
+      "delete_workflow_instance": false,
+      "description": "Parse the FMC correlation event data sent by the FMC remediation module and pass the observable (IP address) to 0015B - Secure Firewall - Block Observable workflow.",
+      "display_name": "Process FMC Correlation Event from Remediation Module",
+      "runtime_user": {
+        "target_default": true
+      },
+      "target": {
+        "no_target": true
+      }
+    },
+    "object_type": "definition_workflow",
+    "actions": [
+      {
+        "unique_name": "definition_activity_02535CR6RPL144KwIK6pFtKP9qYUnXEVhfp",
+        "name": "Set Variables",
+        "title": "Receive Data from Webhook",
+        "type": "core.set_multiple_variables",
+        "base_type": "activity",
+        "properties": {
+          "continue_on_failure": true,
+          "display_name": "Receive Data from Webhook",
+          "skip_execution": false,
+          "variables_to_update": [
+            {
+              "variable_to_update": "$workflow.definition_workflow_025359T2P4HPF5IjzzbKRdoRKW6jNfZdjRh.input.variable_workflow_02535CZI58TL06x4eqq9JK5WSiB3RfWl5WN$",
+              "variable_value_new": "$trigger.triggerevent_02535A2VMRYTI0XPEu4SKuYOkUIcK0RVwTo.output.request_body$"
+            }
+          ]
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_025F0YBSYC3EW217CAlIUhKnTt5Ol5KNWl4",
+        "name": "JSONPath Query",
+        "title": "Parse Input Data",
+        "type": "corejava.jsonpathquery",
+        "base_type": "activity",
+        "properties": {
+          "action_timeout": 180,
+          "continue_on_failure": true,
+          "display_name": "Parse Input Data",
+          "input_json": "$workflow.definition_workflow_025359T2P4HPF5IjzzbKRdoRKW6jNfZdjRh.input.variable_workflow_02535CZI58TL06x4eqq9JK5WSiB3RfWl5WN$",
+          "jsonpath_queries": [
+            {
+              "jsonpath_query": "$.remediation_name",
+              "jsonpath_query_name": "Remediation Name",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+            },
+            {
+              "jsonpath_query": "$.src_ip_addr",
+              "jsonpath_query_name": "Source IP Address",
+              "jsonpath_query_type": "string",
+              "zdate_type_format": "yyyy-MM-dd'T'HH:mm:ssZ"
+            }
+          ],
+          "skip_execution": false
+        },
+        "object_type": "definition_activity"
+      },
+      {
+        "unique_name": "definition_activity_025F12ZWZ287I42vbfkMbFCiwixcfWAtohK",
+        "name": "0015B - Secure Firewall - Block Observable",
+        "title": "0015B - Secure Firewall - Block Observable",
+        "type": "workflow.sub_workflow",
+        "base_type": "subworkflow",
+        "properties": {
+          "continue_on_failure": false,
+          "display_name": "0015B - Secure Firewall - Block Observable",
+          "input": {
+            "variable_workflow_01ML3BD7SISBS077kpX3Y8XYWmlJkq7gXjq": "ip",
+            "variable_workflow_01ML3BIJEVG3N6sxdcUKX1lLBTf5i2pR4aL": "$activity.definition_activity_025F0YBSYC3EW217CAlIUhKnTt5Ol5KNWl4.output.jsonpath_queries.Source IP Address$"
+          },
+          "runtime_user": {
+            "target_default": true
+          },
+          "skip_execution": false,
+          "target": {
+            "execute_on_this_target_group": true,
+            "target_group_id": "target_group_01EJ0TQWPQWBD0qiWqClJKj9FOzwiZRfOFH"
+          },
+          "workflow_id": "definition_workflow_01ML39FS25W1V5nR5onJGG8OBgXRuGG8y79",
+          "workflow_name": "0015B - Secure Firewall - Block Observable"
+        },
+        "object_type": "definition_activity"
+      }
+    ],
+    "categories": [
+      "category_1BMfMXSnJMyt5Ihqi7rWJr5N8cf"
+    ]
+  },
+  "triggers": {
+    "triggerevent_02535A2VMRYTI0XPEu4SKuYOkUIcK0RVwTo": {
+      "workflow_id": "definition_workflow_025359T2P4HPF5IjzzbKRdoRKW6jNfZdjRh",
+      "name": "Event Trigger from Webhook",
+      "title": "",
+      "lowercase_name": "event.event_trigger_from_webhook",
+      "type": "event",
+      "base_type": "trigger",
+      "ref_id": "event_webhook_024R5Q9QEFZGH5LMhenMPZaHE2MTh001cvu",
+      "version": "",
+      "disabled": false,
+      "unique_name": "triggerevent_02535A2VMRYTI0XPEu4SKuYOkUIcK0RVwTo",
+      "object_type": "triggerevent"
+    }
+  },
+  "events": {
+    "event_webhook_024R5Q9QEFZGH5LMhenMPZaHE2MTh001cvu": {
+      "name": "FMC Remediation Module",
+      "title": "FMC Remediation Module",
+      "type": "webhook.event",
+      "base_type": "event",
+      "object_type": "event_webhook",
+      "rule_id": "",
+      "target_id": "",
+      "webhook_id": "webhook_024R5PTFN06O62Ay13rUkFAgRX5V7smWqBP",
+      "version": "1.0.0",
+      "properties": {
+        "title": "FMC Remediation Module",
+        "webhook_id": "webhook_024R5PTFN06O62Ay13rUkFAgRX5V7smWqBP"
+      },
+      "unique_name": "event_webhook_024R5Q9QEFZGH5LMhenMPZaHE2MTh001cvu"
+    }
+  },
+  "target_groups": {
+    "target_group_01EJ0TQWPQWBD0qiWqClJKj9FOzwiZRfOFH": {
+      "unique_name": "target_group_01EJ0TQWPQWBD0qiWqClJKj9FOzwiZRfOFH",
+      "name": "Default TargetGroup",
+      "title": "Default TargetGroup",
+      "type": "generic.target_group",
+      "base_type": "target_group",
+      "version": "1.0.0",
+      "targets": [
+        {
+          "data_target_type": "web-service.endpoint",
+          "view_target_type": "web-service.endpoint",
+          "include_all_targets": true
+        },
+        {
+          "data_target_type": "email.smtp_endpoint",
+          "view_target_type": "email.smtp_endpoint",
+          "include_all_targets": true
+        }
+      ],
+      "object_type": "target_group"
+    }
+  },
+  "webhooks": {
+    "webhook_024R5PTFN06O62Ay13rUkFAgRX5V7smWqBP": {
+      "name": "FMC Remediation Testing Webhook",
+      "title": "FMC Remediation Testing Webhook",
+      "type": "generic.webhook",
+      "base_type": "webhook",
+      "object_type": "webhook",
+      "version": "1.0.0",
+      "properties": {
+        "description": "For testing sending a webhook to SecureX from FMC remediation modulue.",
+        "display_name": "FMC Remediation Testing Webhook",
+        "request_content_type": "application/json"
+      },
+      "unique_name": "webhook_024R5PTFN06O62Ay13rUkFAgRX5V7smWqBP"
+    }
+  },
+  "dependent_workflows": [
+    "definition_workflow_01ML39FS25W1V5nR5onJGG8OBgXRuGG8y79"
+  ]
+}
