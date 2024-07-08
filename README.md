@@ -1,10 +1,32 @@
 # Cisco FMC Remediation Module for XDR
 
+The FMC Remediation Module for XDR module in this repository integrates automated incident response
+capabilities of two Cisco products:
+
+- Cisco Secure Firewall
+- Cisco eXtended Detection and Response (XDR)
+
 This repository shows a simple example of a remediation module that can be installed in Cisco
-Firepower Management Center (FMC). This module can trigger an automation workflow hosted in Cisco
-eXtended Detection and Response (XDR) platform.
+Firepower Management Center (FMC). When adverse conditions in customer's netowrk violate a FMC
+correlation policy, this module can trigger an automation workflow hosted in Cisco
+XDR platform.
 
 ![Data Flow Overview](./images/data_flow_overview.png)
+
+Here are some examples of automated incident response workflows available in XDR:
+
+- Quarantine Endpoints in Cisco Identity Services Engine
+- Block observables in Cisco Secure Firewall
+- Generate Casebook and Investigate in Cisco Threat Response
+- Move Computer to Triage group in Cisco Secure Endpoint
+- Host Isolation with Tier2 Approval in Cisco Secure Endpoint
+- Create Incident in ServiceNow
+- Add to Destination List in Cisco Umbrella
+
+This repository contains a small [example workflow](./XDR_Workflow_Example.json) that parses the
+input data sent by the remediation module and triggers the **Secure Firewall - Block
+Observable** workflow so that the offending source IP can be blocked by Cisco Secure Firewall
+automatically in any newer attack attempts by that source IP.
 
 ## Installation
 
@@ -177,7 +199,7 @@ root@LAB-FMC74:/var/sf/remediations/TriggerXDRWorkflow_1.0/XDR_Workflow_Block_So
 ### Validating the data received in XDR workflow
 
 This repository contains a small [example workflow](./XDR_Workflow_Example.json) that parses the
-input data sent by the remediation module and sends the data to **Secure Firewall - Block
+input data sent by the remediation module and triggers the **Secure Firewall - Block
 Observable** workflow so that the offending source IP can be blocked by Cisco Secure Firewall
 automatically in any newer attack attempts by that source IP.
 
