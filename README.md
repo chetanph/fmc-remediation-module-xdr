@@ -1,3 +1,5 @@
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/chetanph/fmc-remediation-module-xdr)
+
 # Cisco FMC Remediation Module for XDR
 
 The FMC Remediation Module for XDR module in this repository integrates automated incident response
@@ -7,8 +9,8 @@ capabilities of two Cisco products:
 - Cisco eXtended Detection and Response (XDR)
 
 This repository shows a simple example of a remediation module that can be installed in Cisco
-Firepower Management Center (FMC). When adverse conditions in customer's netowrk violate a FMC
-correlation policy, this module can trigger an automation workflow hosted in Cisco
+Firepower Management Center (FMC). When adverse conditions in a customer's network violate an FMC
+correlation policy, this module can trigger an automation workflow hosted in the Cisco
 XDR platform.
 
 ![Data Flow Overview](./images/data_flow_overview.png)
@@ -23,10 +25,10 @@ Here are some examples of automated incident response workflows available in XDR
 - Create Incident in ServiceNow
 - Add to Destination List in Cisco Umbrella
 
-This repository contains a small [example workflow](./XDR_Workflow_Example.json) that parses the
-input data sent by the remediation module and triggers the **Secure Firewall - Block
-Observable** workflow so that the offending source IP can be blocked by Cisco Secure Firewall
-automatically in any newer attack attempts by that source IP.
+This repository contains a small [example workflow](./XDR_Workflow_Example.json). The workflow
+parses the input data sent by the remediation module, then triggers the **Secure Firewall - Block
+Observable** workflow. This blocks the offending source IP in Cisco Secure Firewall
+automatically, therefore also blocking any newer attack attempts by that source IP.
 
 ## Installation
 
@@ -40,7 +42,7 @@ Go to your project folder
 cd fmc-remediation-module-xdr
 ```
 
-Create remediation module package
+Create the remediation module package
 ```bash
 tar -C module -czf workflow_module.tar.gz module.template trigger_workflow.py
 ```
@@ -71,12 +73,13 @@ https://automate.us.security.cisco.com/webhooks/{WEBHOOK_ID}?api_key={WEBHOOK_AP
 
 ### Create a new remediation instance in FMC.
 
-1. On the remediation module details screen, click on **Add** button under **Configured Instances**.
-Provide a name, description and **XDR Webhook URL** for the instance and click on **Create**.
+1. On the remediation module details screen, click on the **Add** button under
+**Configured Instances**. Provide a name, description and **XDR Webhook URL** for the
+instance and click on **Create**.
 
 ![FMC XDR_Remediation Create Instance Block Source IP](./images/FMC_XDR_Remediation_Create_Instance_Block_Source_IP.png)
 
-2. Click on **Add** button to add a remediation action of one of the types available from the
+2. Click on the **Add** button to add a remediation action of one of the types available from the
 dropdown.
 
 ![FMC XDR Remediation Edit Instance Block Source IP](./images/FMC_XDR_Remediation_Edit_Instance_Block_Source_IP.png)
@@ -101,13 +104,13 @@ details for the rule and click **Save**.
 
 ### Create a correlation policy
 
-1. Navigate to **Policy Management** tab and click on **Create Policy**. Provide necessary details
+1. Navigate to the **Policy Management** tab and click on **Create Policy**. Provide necessary details
 for the policy.
 
-2. Click on **Add Rules**, select the newly added rule and click on **Add** button.
+2. Click on **Add Rules**. Select the newly added rule. Click on the **Add** button.
 
-3. Click on the ![chat](./images/FMC_chat_icon.svg) next to the rule, select the newly created
-remediation action, move it to the **Assigned Responses** and save the changes.
+3. Click on ![chat](./images/FMC_chat_icon.svg) next to the rule. Select the newly created
+remediation action. Move it to **Assigned Responses** and save the changes.
 
 ![FMC_Correlation_Policy_Assigned_Response_to_Rule](./images/FMC_Correlation_Policy_Assigned_Response_to_Rule.png)
 
@@ -117,9 +120,9 @@ remediation action, move it to the **Assigned Responses** and save the changes.
 
 ## How to test the remediation module
 
-Generate events that triggers the correlation policy.
+Generate events that trigger the correlation policy.
 
-### Testing the module from FMC CLI.
+### Testing the module from the FMC CLI.
 
 ```
 [cisco@LAB-LINUX-JUMPBOX ~]$ ssh admin@LAB-FMC.example.org
@@ -196,17 +199,17 @@ XDR Automation Webhook accepted data: {'remediation_name': 'XDR_Block_Source_IP'
 root@LAB-FMC74:/var/sf/remediations/TriggerXDRWorkflow_1.0/XDR_Workflow_Block_Source_IP#
 ```
 
-### Validating the data received in XDR workflow
+### Validating the data received in the XDR workflow
 
-This repository contains a small [example workflow](./XDR_Workflow_Example.json) that parses the
-input data sent by the remediation module and triggers the **Secure Firewall - Block
-Observable** workflow so that the offending source IP can be blocked by Cisco Secure Firewall
-automatically in any newer attack attempts by that source IP.
+This repository contains a small [example workflow](./XDR_Workflow_Example.json). The workflow
+parses the input data sent by the remediation module, then triggers the **Secure Firewall - Block
+Observable** workflow. This blocks the offending source IP in Cisco Secure Firewall
+automatically, therefore also blocking any newer attack attempts by that source IP.
 
 ![Workflow Definition](./images/Workflow_Definition.png)
 
-Review the workflow run triggered by the remediation module. Below screenshot shows the JSON data
-received in the workflow.
+Review the workflow run that was triggered by the remediation module. Below screenshot shows the JSON
+data received in the workflow.
 
 ![Workflow Run Received Input](./images/Workflow_Run_Received_Input.png)
 
@@ -241,11 +244,6 @@ requirements for any customer environment before the module can be used in a pro
 
 If you have questions, concerns, bug reports, etc., please create an issue against this repository.
 
-## Getting involved
-
-This section should detail why people should get involved and describe key areas you are currently focusing on; e.g., trying to get feedback on features, fixing certain bugs, building important pieces, etc. Include information on how to setup a development environment if different from general installation instructions.
-
-General instructions on _how_ to contribute should be stated with a link to [CONTRIBUTING](./CONTRIBUTING.md) file.
 
 ## Author(s)
 
