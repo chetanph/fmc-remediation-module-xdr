@@ -1,3 +1,5 @@
+[![published](https://static.production.devnetcloud.com/codeexchange/assets/images/devnet-published.svg)](https://developer.cisco.com/codeexchange/github/repo/chetanph/fmc-remediation-module-xdr)
+
 # Cisco FMC Remediation Module for XDR
 
 The FMC Remediation Module for XDR module in this repository integrates automated incident response
